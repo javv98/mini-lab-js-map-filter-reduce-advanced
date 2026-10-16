@@ -91,7 +91,15 @@ function frequencies(array) {
 //   → ["Ana", "Luis"]
 //   pluck([{ a: 1 }, { a: 2 }, { a: 3 }], "a") → [1, 2, 3]
 function pluck(array, path) {
-  return array.map(key => key[path])
+  let newPath = path.split(".") // ["user", "name"]
+  return array.map(obj => { // obj en i = 1 => {user: {name: "Ana"}}
+    
+    if (path.includes(".")) {
+    return obj[newPath[0]][newPath[1]]
+    } else {
+      return obj[path]
+    }
+  })
 }
 
 // 6. mapValues(obj, fn)
@@ -102,7 +110,12 @@ function pluck(array, path) {
 //   mapValues({ a: 1, b: 2, c: 3 }, x => x * 10) → { a: 10, b: 20, c: 30 }
 //   mapValues({ name: "ana", city: "madrid" }, s => s.toUpperCase()) → { name: "ANA", city: "MADRID" }
 function mapValues(obj, fn) {
-  // Tu codigo aqui
+  let values = Object.values(obj).map(value => fn(value)) // [10, 20, 30]
+  let keys = Object.keys(obj) // ["a", "b", "c"]
+  return values.reduce((acc, el, i)=> {
+    acc[keys[i]] = el
+    return acc
+  }, {})
 }
 
 // =============================================================================
@@ -117,7 +130,12 @@ function mapValues(obj, fn) {
 //   transformKeys({ firstName: "Ana", lastName: "Garcia" }, key => key.toLowerCase())
 //   → { firstname: "Ana", lastname: "Garcia" }
 function transformKeys(obj, fn) {
-  // Tu codigo aqui
+  let values = Object.values(obj)
+  let keys = Object.keys(obj).map(value => fn(value))
+  return values.reduce((acc, el, i)=> {
+    acc[keys[i]] = el
+    return acc
+  }, {})
 }
 
 // 8. getStatistics(numbers)
@@ -128,7 +146,17 @@ function transformKeys(obj, fn) {
 //   getStatistics([2, 4, 6, 8, 10])
 //   → { min: 2, max: 10, sum: 30, average: 6, count: 5 }
 function getStatistics(numbers) {
-  // Tu codigo aqui
+  return numbers.reduce((acc, el) => {
+    acc.sum += el
+    acc.count += 1
+      if (el > acc.max) {
+        acc.max = el
+      } else if (el < acc.min) {
+        acc.min = el
+      }
+    acc.average = acc.sum / acc.count
+    return acc
+    },{min: numbers[0], max: numbers[0], sum: 0, average: 0, count: 0})
 }
 
 // 9. partitionBy(array, fn)
