@@ -14,7 +14,16 @@
 //   chunk([1, 2, 3, 4, 5], 2) → [[1, 2], [3, 4], [5]]
 //   chunk(["a", "b", "c", "d"], 3) → [["a", "b", "c"], ["d"]]
 function chunk(array, size) {
-  // Tu codigo aqui
+  let arrAux = []
+
+  return array.reduce((acc, el, index, arr) => {
+    arrAux.push(el)
+   if (arrAux.length === size || index === arr.length - 1) {
+      acc.push(arrAux)
+      arrAux = []
+    }
+    return acc
+  },[])
 }
 
 // 2. zip(arr1, arr2)
@@ -25,7 +34,11 @@ function chunk(array, size) {
 //   zip(["a", "b", "c"], [1, 2, 3]) → [["a", 1], ["b", 2], ["c", 3]]
 //   zip([1, 2], ["x", "y", "z"]) → [[1, "x"], [2, "y"]]
 function zip(arr1, arr2) {
-  // Tu codigo aqui
+  let defArr = []
+  for (let i = 0; i < arr1.length && i < arr2.length; i++) {
+    defArr.push([arr1[i], arr2[i]])
+  }
+  return defArr
 }
 
 // 3. intersection(arr1, arr2)
@@ -35,7 +48,12 @@ function zip(arr1, arr2) {
 //   intersection([1, 2, 3, 4], [3, 4, 5, 6]) → [3, 4]
 //   intersection([1, 1, 2, 2], [2, 2, 3, 3]) → [2]
 function intersection(arr1, arr2) {
-  // Tu codigo aqui
+  return arr1.reduce((acc, el) => {
+    if (arr2.includes(el) && !(acc.includes(el))) {
+      acc.push(el)
+    }
+    return acc
+  },[])
 }
 
 // =============================================================================
@@ -50,7 +68,18 @@ function intersection(arr1, arr2) {
 //   frequencies(["js", "py", "js", "go", "js", "py"])
 //   → [{ value: "js", count: 3 }, { value: "py", count: 2 }, { value: "go", count: 1 }]
 function frequencies(array) {
-  // Tu codigo aqui
+  return array.reduce((acc, el, i, arr) => {
+    if (i === arr.indexOf(el)) {
+      let count = 0
+      for (let element of arr) {
+        if (element === el) {
+          count += 1
+        }
+      }
+    acc.push({value: el, count: count})
+    }
+  return acc
+  }, [])
 }
 
 // 5. pluck(array, path)
@@ -62,7 +91,7 @@ function frequencies(array) {
 //   → ["Ana", "Luis"]
 //   pluck([{ a: 1 }, { a: 2 }, { a: 3 }], "a") → [1, 2, 3]
 function pluck(array, path) {
-  // Tu codigo aqui
+  return array.map(key => key[path])
 }
 
 // 6. mapValues(obj, fn)
