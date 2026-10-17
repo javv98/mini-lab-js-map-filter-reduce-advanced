@@ -167,7 +167,14 @@ function getStatistics(numbers) {
 //   partitionBy([1, 2, 3, 4, 5, 6], n => n % 2 === 0)
 //   → [[2, 4, 6], [1, 3, 5]]
 function partitionBy(array, fn) {
-  // Tu codigo aqui
+  return array.reduce((acc, el) => {
+    if (fn(el) === true) {
+      acc[0].push(el)
+    } else {
+      acc[1].push(el)
+    }
+    return acc
+  }, [[], []])
 }
 
 // =============================================================================
@@ -193,7 +200,16 @@ function partitionBy(array, fn) {
 //       verdura: [{ type: "verdura", name: "zanahoria" }]
 //     }
 function groupBy(array, key) {
-  // Tu codigo aqui
+  return array.reduce((acc, el, index, arr) => {
+    let arrAux = []
+    arr.forEach(el2 => {
+      if (el[key] === el2[key]) {
+        arrAux.push(el2)
+      }
+    })
+    acc[el[key]] = arrAux
+    return acc
+  }, {})
 }
 
 // 11. buildLookupTable(array, key)
