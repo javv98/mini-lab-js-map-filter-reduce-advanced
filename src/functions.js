@@ -220,7 +220,10 @@ function groupBy(array, key) {
 //   buildLookupTable([{ id: 1, name: "Ana" }, { id: 2, name: "Luis" }], "id")
 //   → { 1: { id: 1, name: "Ana" }, 2: { id: 2, name: "Luis" } }
 function buildLookupTable(array, key) {
-  // Tu codigo aqui
+  return array.reduce((acc, el) => {
+    acc[el[key]] = el
+    return acc
+  }, {})
 }
 
 // 12. pivot(array)
@@ -232,7 +235,21 @@ function buildLookupTable(array, key) {
 //   pivot([{ name: "Ana", age: 25 }, { name: "Luis", age: 30 }])
 //   → { name: ["Ana", "Luis"], age: [25, 30] }
 function pivot(array) {
-  // Tu codigo aqui
+  return array.reduce ((acc, el, i, arr) => {
+    let keys = Object.keys(el) // ["name", "age"]
+    let values = Object.values(el) // ["Ana", 25]
+
+    for (let i = 0; i < keys.length; i++) {
+      if (!(keys[i] in acc)) {
+        acc[keys[i]] = []
+        acc[keys[i]].push(values[i])
+      } else {
+        acc[keys[i]].push(values[i])
+      }
+    }
+
+    return acc
+  }, {})
 }
 
 // =============================================================================
@@ -247,7 +264,13 @@ function pivot(array) {
 //   flatMap([[1, 2], [3, 4]], arr => arr.map(n => n * 2)) → [2, 4, 6, 8]
 //   flatMap(["hola mundo", "foo bar"], s => s.split(" ")) → ["hola", "mundo", "foo", "bar"]
 function flatMap(array, fn) {
-  // Tu codigo aqui
+  let result = array.reduce((acc, el, i, arr) => {
+    acc.push(fn(el))
+    return acc
+  }, [])
+
+  let resultFlat = result.flat(Infinity)
+  return resultFlat
 }
 
 // 14. topN(array, key, n)
@@ -262,7 +285,11 @@ function flatMap(array, fn) {
 //   )
 //   → [{ name: "B", score: 95 }, { name: "A", score: 80 }]
 function topN(array, key, n) {
-  // Tu codigo aqui
+  return array
+  .sort((a, b) => b[key] - a[key])
+  .filter((obj, i, arr) => {
+    return i < n
+  })
 }
 
 // 15. summarizeBy(array, groupKey, valueKey)
@@ -282,5 +309,13 @@ function topN(array, key, n) {
 //   )
 //   → { Ana: 250, Luis: 200 }
 function summarizeBy(array, groupKey, valueKey) {
-  // Tu codigo aqui
+  return array.reduce((acc, el, i, arr) => {
+    if (!(el[groupKey] in acc)) {
+      acc[el[groupKey]] = el[valueKey]
+    } else {
+      acc[el[groupKey]] += el[valueKey]
+    }
+
+    return acc
+  }, {})
 }
